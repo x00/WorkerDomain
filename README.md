@@ -80,7 +80,9 @@ Hooks can have parameters such as `$Sender` which can easily be passed to Worker
 
 As you can see in the diagram the `UtilityDomain` is a little less lean because it contains the Worker collection and also the `LinkWorker` method used to like all the workers. This is because it both serves as a Domain for Utility Worker, but also holds all the workers and the method to link them. It doesn't have to be done this way but it is clear enough IMO. 
 
-Now you can see in this example you have the Workers `Utility`, `API`, `Settings` and `UI` shown on the right and the corresponding domain classes  shown on the left. This is simply a suggestion, you can have whatever Workers you like. You can add more Workers, so long as the chain is extended for the Domains. I will talk more about the specific implementation and how it relates to the Vanilla/Garden in a linked discussion.
+Now you can see in this example you have the Workers `Utility`, `API`, `Settings` and `UI` shown on the right and the corresponding domain classes  shown on the left. This is simply a suggestion, you can have whatever Workers you like. You can add more Workers, so long as the chain is extended for the Domains. I will talk more about the specific implementation and how it relates to the Vanilla/Garden in this discussion:
+
+http://vanillaforums.org/discussion/24724/worker-domain-design-pattern
 
 The actual order of the Domain chain is less important, because workers are decoupled from the plugin, and as they are auto-initialised they are available to each other from the outset. However the order might be useful for visualising the extension. 
 
