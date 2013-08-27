@@ -31,13 +31,13 @@ Without further ado, here is a spuedo-UML example of implementation of the patte
 
 ![](https://dl.dropboxusercontent.com/u/15933183/WorkerDomain/WorkerDomain.png)
 
-The purpose is both separation of concerns and a way of organising and making clear implicit code. What you have is the standard plugin class at the bottom left in pink `MyPlugin`, is what is directly employed by the framework, and its method will be called by the framework. 
+The purpose is both separation of concerns and a way of organising and making clear implicit code. What you have is the standard plugin class at the bottom left in pink `MyPlugin`, is what is directly employed by the framework, and its methods will be called by the framework. 
 
-Quite often this file doesn't just serve the purpose of interfacing with the pluggable API, it contain all kinds of other logic, which can make it quite clutter fasts, especially if your plugin is more than a dozen
+Quite often this file doesn't just serve the purpose of interfacing with the pluggable API, it contain all kinds of other logic, which can make it quite cluttered, especially if your plugin is more than a dozen lines.
 
 The idea in this pattern is to keep this file lean, and basically only contain interfacing methods, if at all possible. 
 
-Now within plugin there can be all sort of different tasks, and these categories of tasks can be intermingled. The idea of the patterns is to place task operations under `Workers`, which can collaborate together. 
+Now within plugin there can be all sort of different tasks, and these categories of tasks can be intermingled. The idea of the pattern is to place task operations under `Workers`, which can collaborate together. 
 
 Now Workers are grouped in a single collection, but their classes are not part of the plugins inheritance, they are are merely employed to do tasks. 
 
@@ -47,12 +47,12 @@ Workers need a way of collaborating with each other, and also a way of interacti
 
 These two happen to be related, because the collection is held by the plugin instance. So each Worker has a back-reference to the plugin, set dynamically use a public property `->Plgn`.
 
-To reference the plug-in it would be as simple as  `$this->Plgn`. However it is more long-winded to reference another worker,
+To reference the plugin it would be as simple as  `$this->Plgn`. However it is more long-winded to reference another worker,
 `$this->Plgn->Workers[WorkerName]`.  However you won't have worry about this as you will see. 
 
 But wait a minute...how do the workers even get employed, and put into the collection in the first place?  Well there is a Utility method called LinkWorker that does it. 
 
-However this is not just called repeatedly in the plugin class, becuase this isn't really to do with the framework's pluggable interface, but a design pattern for the pluign as a whole. 
+However this is not just called repeatedly in the plugin class, because this isn't really to do with the framework's pluggable interface, but a design pattern for the plugin as a whole. 
 
 Instead you have Domain classes (shown on the left in yellow and cyan), which use inheritance of the plugin class as a mechanism of the pattern. These classes are supposed to be lean, and have a very specific purpose.
 
@@ -74,14 +74,14 @@ However as LinkWorker lets you put whatever Name and Class identifier as you lik
 
 In the case of `->API()`, it is referencing `->Workers['API']` internally. However if it is not initialised, LinkWorker will automatically do that for you, which is the advantage of using the Domain method of access. **_If a Worker is not used it is not initialised, and it is initialised automatically on first use._** If you do not use the domain method of acces, this will not happen. It is lazy loading if you like. 
 
-As you remember `$this->Plgn` is the public back-reference to the plugin instance from a Worker (you don't have to explicitly declare `public $Plgn;`, but it shouldn't hurt). This means if you wish to use native plugin method such as GetView a worker could do $this->Plgn->GetView(). As it happens this example also includes a bunch of useful Utility functions for plugin development so I recommend `$this->Plgn->Utility()->ThemeView()` instead, which uses GetView internally, however this is not part of the design pattern just an implementation using the pattern with some code candy. 
+As you remember `$this->Plgn` is the public back-reference to the plugin instance from a Worker (you don't have to explicitly declare `public $Plgn;`, but it shouldn't hurt). This means if you wish to use native plugin methods such as `GetView`, a worker could do `$this->Plgn->GetView()`. As it happens this example also includes a bunch of useful Utility functions for plugin development so I recommend `$this->Plgn->Utility()->ThemeView()` instead, which uses `GetView` internally, however this is not part of the design pattern just an implementation using the pattern with some code candy. 
 
-Hooks can have parameters such as $Sender which can easily be passed to Worker methods, in order to do the work. Nothing unconventional about this. 
+Hooks can have parameters such as `$Sender` which can easily be passed to Worker methods, in order to do the work. Nothing unconventional about this. 
 
-As you can see in the diagram the `UtilityDomain` is a little less lean becuase it contains the Worker collection and also the `LinkWorker` method used to like all the workers. This is becuase it both severs as a Domain for Utility Worker, but also holds all the workers and the method to link them. It doesn't have to be done this way but it is clear enough IMO. 
+As you can see in the diagram the `UtilityDomain` is a little less lean because it contains the Worker collection and also the `LinkWorker` method used to like all the workers. This is because it both serves as a Domain for Utility Worker, but also holds all the workers and the method to link them. It doesn't have to be done this way but it is clear enough IMO. 
 
-Now you can see in this example you have the Workers `Utility`, `API`, `Settings` and `UI`. shown on the right and the corresponding domain classes  shown on the left. This is simply a suggestion, you can have whatever Workers you like. You can add more Workers, so long as the chain is extended for the Domains. I will talk more about the specific implementation and how it relates to the Vanilla/Garden in a linked discussion.
+Now you can see in this example you have the Workers `Utility`, `API`, `Settings` and `UI` shown on the right and the corresponding domain classes  shown on the left. This is simply a suggestion, you can have whatever Workers you like. You can add more Workers, so long as the chain is extended for the Domains. I will talk more about the specific implementation and how it relates to the Vanilla/Garden in a linked discussion.
 
-The actual order of the Domain chain is less important, becuase workers are decoupled from the plugin, and as they are auto-initialised they are available to each other from the outset. However the order might be useful for visualising the extension. 
+The actual order of the Domain chain is less important, because workers are decoupled from the plugin, and as they are auto-initialised they are available to each other from the outset. However the order might be useful for visualising the extension. 
 
-You could say Workers have a loose hierarchy, becuase some may never be directly employed by the plugin's hooks. However it is more accurate to say the Workers are collaborative, and delegated to specific sorts of tasks, and the hierarchy, so far as it exists, is fairly flat, though obviously by design API is more low level than UI in this example. 
+You could say Workers have a loose hierarchy, because some may never be directly employed by the plugin's hooks. However it is more accurate to say the Workers are collaborative, and delegated to specific sorts of tasks, and the hierarchy, so far as it exists, is fairly flat. Though obviously by design API is more low level than UI in this example. 
