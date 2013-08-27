@@ -27,7 +27,7 @@ I didn’t design this for Applications as a whole, but specifically for the inc
 
 ### Description ###
 
-Without further ado, here is a spuedo-UML example of implementation of the pattern
+Without further ado, here is a pseudo-UML example of implementation of the pattern
 
 ![](https://dl.dropboxusercontent.com/u/15933183/WorkerDomain/WorkerDomain.png)
 
@@ -62,9 +62,9 @@ Domains like the the name implies, provide a simple identifier for the Workers a
 
 **_Each Domain is responsible for linking a single Worker at a time._** Note this is one instance. It doesn't say that you couldn't reuse the same class for different Worker. The linking of the worker could be conditional, for example a different version of the framework, could Link a different worker or the same class with custom parameters send via the LinkWorker. 
 
-This possibility of custom deployment is one of the reason why you have separate Domain classes, the other reason is simply to make it plain in the code, which is part of the reason for using a design pattern in the first place.  it would be easy to magically deploy the workers but the wouldn't be as clear, not to mention it would carry an overhead. 
+This possibility of custom deployment is one of the reasons why you have separate Domain classes, the other reason is simply to make it plain in the code, which is part of the point of using a design pattern in the first place.  it would be easy to magically deploy the workers but the wouldn't be as clear, not to mention it would carry an overhead. 
 
-A Domain classes are usually very lean they can go in the same file as a Worker, which is also for clarity, and simplifies loading. 
+Domain classes are usually very lean they can go in the same file as a Worker, which is also for clarity, and simplifies loading. 
 
 **_A Domain neither owns nor manages Workers once deployed._** its job is to link the Workers, and return the worker so they can collaborate together. 
 
@@ -72,7 +72,7 @@ The Workers are known by their short name with is usually a suffix of their clas
 
 However as LinkWorker lets you put whatever Name and Class identifier as you like, you can do as you please, and this can be useful if you have a more complex scenario. After these two parameters, it also can take an arbitrary number of parameters, which is passed to the constructor of the Worker on initialisation, however if you are using many of them of too often, you are probably doing it wrong. 
 
-In the case of `->API()`, it is referencing `->Workers['API']` internally. However if it is not initialised, LinkWorker will automatically do that for you, which is the advantage of using the Domain method of access. **_If a Worker is not used it is not initialised, and it is initialised automatically on first use._** If you do not use the domain method of acces, this will not happen. It is lazy loading if you like. 
+In the case of `->API()`, it is referencing `->Workers['API']` internally. However if it is not initialised, LinkWorker will automatically do that for you, which is the advantage of using the Domain method of access. **_If a Worker is not used it is not initialised, and it is initialised automatically on first use._** If you do not use the domain method of access, this will not happen. It is lazy loading if you like. 
 
 As you remember `$this->Plgn` is the public back-reference to the plugin instance from a Worker (you don't have to explicitly declare `public $Plgn;`, but it shouldn't hurt). This means if you wish to use native plugin methods such as `GetView`, a worker could do `$this->Plgn->GetView()`. As it happens this example also includes a bunch of useful Utility functions for plugin development so I recommend `$this->Plgn->Utility()->ThemeView()` instead, which uses `GetView` internally, however this is not part of the design pattern just an implementation using the pattern with some code candy. 
 
