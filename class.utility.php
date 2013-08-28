@@ -80,17 +80,17 @@ abstract class WorkerDomainUtilityDomain extends Gdn_Plugin {
       return $this->Workers[$WorkerName];
     $Args = func_get_args();
     switch(count($Args)){
-      case 0;
+      case 2;
         $Worker = new $WorkerClass();
         break;
-      case 1:
+      case 3:
         $Worker = new $WorkerClass($Args[2]);
         break;
-      case 2:
+      case 4:
         $Worker = new $WorkerClass($Args[2],$Args[3]);
         break;
-      case 3:
-        $Worker = new $WorkerClass($Args[2],$Args[4],$Args[5]);
+      case 5:
+        $Worker = new $WorkerClass($Args[2],$Args[3],$Args[4]);
         break;
       default:
         $Ref = new ReflectionClass($WorkerClass);
@@ -255,8 +255,8 @@ class WorkerDomainUtility {
    */
 
   public function MiniDispatcher($Sender, $ControllerClass = 'UI', $PluggablePrefix = NULL, $LocalPrefix = NULL){
-    $PluggablePrefix = $PluggablePrefix ? $PluggablePrefix : $this->Plgn->GetPluginIndex().'Controller_';
-    $LocalPrefix = $LocalPrefix ? $LocalPrefix : 'Controller_';
+    $PluggablePrefix = $PluggablePrefix ? $PluggablePrefix : $this->Plgn->GetPluginIndex().$ControllerClass.'Controller_';
+    $LocalPrefix = $LocalPrefix ? $LocalPrefix : $ControllerClass.'Controller_';
     $Sender->Form = new Gdn_Form();
 
     $Plugin = $this;

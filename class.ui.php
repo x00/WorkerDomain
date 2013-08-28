@@ -82,7 +82,7 @@ class WorkerDomainUI {
    *  @return void
    */
 
-  public function Controller_Index($Sender){
+  public function UIController_Index($Sender){
     $Sender->SetData('Title',$this->Plgn->API()->GetProperty('LinkName'));
     $Sender->SetData('Message',$this->Plgn->API()->GetProperty('Message'));
     $Sender->View = $this->Plgn->Utility()->ThemeView('index');

@@ -89,7 +89,7 @@ class WorkerDomainSettings {
     $Sender->AddCssFile('workerdomain.css','plugins/WorkerDomain');
     $Sender->AddSideMenu();
     // dispatch to specific settings page
-    $this->Plgn->Utility()->MiniDispatcher($Sender,'Settings','WorkerDomainSettingsController_','SettingsController_');
+    $this->Plgn->Utility()->MiniDispatcher($Sender,'Settings');
   }
 
   /**
