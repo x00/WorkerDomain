@@ -16,6 +16,7 @@
  *  The plugin file can access it like so:
  *  $this->API()
  *
+ *  @abstract
  */
 
 abstract class WorkerDomainAPIDomain extends WorkerDomainUtilityDomain {
@@ -53,7 +54,6 @@ abstract class WorkerDomainAPIDomain extends WorkerDomainUtilityDomain {
  *  hooking WorkerDomain_Loaded_Handler
  *  and accessing $Sender->Plgn->API();
  *
- *  @abstract
  */
 
 class WorkerDomainAPI {
@@ -81,6 +81,7 @@ class WorkerDomainAPI {
    *  @return void
    *
    */
+
   public function Init(){
     $this->Plgn->FireEvent('Loaded');
   }
@@ -93,15 +94,23 @@ class WorkerDomainAPI {
    *  @param string $PropertyName
    *  @param string $Default (optional) to retrieve if not set
    *
-   *  @return void
+   *  @return mixed
    *
    */
+
   public function GetProperty($PropertyName, $Default = ''){
     $Default = $Default ? $Default : GetValue($PropertyName,$this->DefaultProperties,'');
     return C('Plugins.WorkerDomain.'.$PropertyName, $Default);
   }
 
-
+  /**
+   *  @@ GetProperties @@
+   *
+   *  gets all properties
+   *
+   *  @return mixed
+   *
+   */
   public function GetProperties(){
     return array_merge($this->DefaultProperties,C('Plugins.WorkerDomain', array()));
   }
@@ -132,7 +141,6 @@ class WorkerDomainAPI {
    *  @return bool FALSE on failure
    *
    */
-
 
   public function SetProperties($Properties){
     $Save = array();

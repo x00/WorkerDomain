@@ -150,7 +150,7 @@ class WorkerDomain extends WorkerDomainUIDomain{
    *  Hook BeforeLoadRoutes to use dynamic router
    *
    *  @param Gdn_Controller $Sender
-   *  @param mixed[string] $Args
+   *  @param array[string]mixed $Args
    *
    *  @return void
    */

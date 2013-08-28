@@ -22,7 +22,7 @@
  *  The plugin file can access it like so:
  *  $this->Utility()
  *
- * @abstract
+ *  @abstract
  */
 
 abstract class WorkerDomainUtilityDomain extends Gdn_Plugin {
