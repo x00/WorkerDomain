@@ -313,9 +313,8 @@ class WorkerDomainUtility {
 
   public function ThemeView($View){
     $ThemeViewLoc = CombinePaths(array(
-      PATH_THEMES, Gdn::Controller()->Theme, 'views', $this->Plgn->GetPluginFolder()
+      PATH_THEMES, Gdn::Controller()->Theme, 'views', $this->Plgn->GetPluginFolder(FALSE)
     ));
-
     if(file_exists($ThemeViewLoc.DS.$View.'.php')){
       $View=$ThemeViewLoc.DS.$View.'.php';
     }else{
